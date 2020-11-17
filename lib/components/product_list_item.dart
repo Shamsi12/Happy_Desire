@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/models/product.dart';
@@ -17,7 +18,6 @@ class ProductListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.pushNamed(context, ProductDetailsScreen.routeName),
       child: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: getProportionateScreenWidth(8),
@@ -46,7 +46,7 @@ class ProductListItem extends StatelessWidget {
                   ),
                   child: Stack(
                     children: [
-                      Image.asset(
+                      CachedNetworkImage(imageUrl:
                         product.image,
                         fit: BoxFit.cover,
                         width: double.infinity,

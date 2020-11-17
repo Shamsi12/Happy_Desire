@@ -6,17 +6,20 @@ import 'package:shop_app/constants.dart';
 import 'package:shop_app/dummy_data.dart';
 import 'package:shop_app/models/product.dart';
 import 'package:shop_app/screens/cart/cart_screen.dart';
+import 'package:shop_app/screens/home/components/home_brands.dart';
 import 'package:shop_app/screens/home/components/home_featured_list_item.dart';
 import 'package:shop_app/screens/home/components/home_special_list_item.dart';
 import 'package:shop_app/screens/notification/notification_screen.dart';
 import 'package:shop_app/size_config.dart';
+import 'package:shop_app/utils.dart';
 
 class Body extends StatefulWidget {
   @override
   _BodyState createState() => _BodyState();
 }
 
-class _BodyState extends State<Body> {
+class _BodyState extends State<Body>{
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -151,21 +154,36 @@ class _BodyState extends State<Body> {
                 padding: EdgeInsets.only(
                   left: getProportionateScreenWidth(15),
                 ),
-                child: Container(
-                  height: getProportionateScreenHeight(128),
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: DummyData.dummySpecialCategories.length,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        return HomeSpecialListItem(
-                          category: DummyData.dummySpecialCategories[index],
-                        );
-                      }),
+                child: FutureBuilder(
+                  future:DummyData.getSpecialItems(),
+                  builder:(BuildContext context, AsyncSnapshot snapshot){
+                    if(!snapshot.hasData){
+                      return Container(
+                          child:Center(
+                            child: CircularProgressIndicator(),
+                          )
+                      );
+                    }
+                    else {
+                      return Container(
+                        height: getProportionateScreenHeight(150),
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: snapshot.data.length,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (BuildContext context, int index) {
+                              return HomeSpecialListItem(
+                                category: snapshot.data[index],
+                              );
+                            }),
+
+                      );
+                    }
+                  },
                 ),
               ),
               SizedBox(height: getProportionateScreenHeight(15)),
-              ListTitleRow(title: 'Featured Products', suffix: 'See More'),
+              ListTitleRow(title: 'FEATURED PRODUCTS', suffix: 'See More'),
               SizedBox(height: getProportionateScreenHeight(20)),
               Padding(
                 padding: EdgeInsets.only(
@@ -173,64 +191,183 @@ class _BodyState extends State<Body> {
                 ),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  // child: FutureBuilder(
-                  //   future:getFeaturedProducts(),
-                  //   builder:(BuildContext context, AsyncSnapshot snapshot){
-                  //     if(snapshot.data ==null){
-                  //       return Container(
-                  //           child:Center(
-                  //             child: Text("Loading")
-                  //           )
-                  //       );
-                  //     }
-                  //     else{
-                  //       return ListView.builder(
-                  //           itemCount: snapshot.data.length,
-                  //           itemBuilder: (BuildContext context,int index){
-                  //             return ListTile(
-                  //               title:Text(snapshot.data[index].name),
-                  //             );
-                  //           }
-                  //       );
-                  //     }
-                  //   },
-                  // ),
-                  child:Row(
-                    children: [
-                      ...List.generate(
-                        DummyData.dummyProducts.length,
-                            (index) {
-                          return HomeFeaturedListItem(
-                            product: DummyData.dummyProducts[index],
-                          );
-                        },
-                      ),
-                      SizedBox(width: getProportionateScreenWidth(20)),
-                    ],
+                  child: FutureBuilder(
+                    future:DummyData.getFeaturedProducts(),
+                    builder:(BuildContext context, AsyncSnapshot snapshot){
+                      if(!snapshot.hasData){
+                        return Container(
+                            child:Center(
+                              child: CircularProgressIndicator(),
+                            )
+                        );
+                      }
+                      else {
+                        return Container(
+                          height: getProportionateScreenHeight(250),
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: snapshot.data.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (BuildContext context, int index) {
+                                return HomeFeaturedListItem(
+                                  product: snapshot.data[index],
+                                );
+                              }),
+
+                        );
+                      }
+                      },
                   ),
                 ),
               ),
-              SizedBox(height: getProportionateScreenHeight(10)),
-              ListTitleRow(title: 'Best Selling Products', suffix: 'See More'),
               SizedBox(height: getProportionateScreenHeight(15)),
+              ListTitleRow(title: 'NEWEST PRODUCTS', suffix: 'See More'),
+              SizedBox(height: getProportionateScreenHeight(20)),
               Padding(
                 padding: EdgeInsets.only(
                   left: getProportionateScreenWidth(15),
                 ),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      ...List.generate(
-                        DummyData.dummyProducts.length,
-                        (index) {
-                          return HomeFeaturedListItem(
-                            product: DummyData.dummyProducts[index],
-                          );
-                        },
-                      ),
-                      SizedBox(width: getProportionateScreenWidth(20)),
-                    ],
+                  child: FutureBuilder(
+                    future:DummyData.getNewestProducts(),
+                    builder:(BuildContext context, AsyncSnapshot snapshot){
+                      if(!snapshot.hasData){
+                        return Container(
+                            child:Center(
+                              child: CircularProgressIndicator(),
+                            )
+                        );
+                      }
+                      else {
+                        return Container(
+                          height: getProportionateScreenHeight(250),
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: snapshot.data.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (BuildContext context, int index) {
+                                return HomeFeaturedListItem(
+                                  product: snapshot.data[index],
+                                );
+                              }),
+
+                        );
+                      }
+                    },
+                  ),
+                ),
+              ),
+              SizedBox(height: getProportionateScreenHeight(15)),
+              ListTitleRow(title: 'TOP SELLERS', suffix: 'See More'),
+              SizedBox(height: getProportionateScreenHeight(20)),
+              Padding(
+                padding: EdgeInsets.only(
+                  left: getProportionateScreenWidth(15),
+                ),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: FutureBuilder(
+                    future:DummyData.getTopSellers(),
+                    builder:(BuildContext context, AsyncSnapshot snapshot){
+                      if(!snapshot.hasData){
+                        return Container(
+                            child:Center(
+                              child: CircularProgressIndicator(),
+                            )
+                        );
+                      }
+                      else {
+                        return Container(
+                          height: getProportionateScreenHeight(250),
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: snapshot.data.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (BuildContext context, int index) {
+                                return HomeFeaturedListItem(
+                                  product: snapshot.data[index],
+                                );
+                              }),
+
+                        );
+                      }
+                    },
+                  ),
+                ),
+              ),
+              SizedBox(height: getProportionateScreenHeight(15)),
+              ListTitleRow(title: 'TOP DEALS', suffix: 'See More'),
+              SizedBox(height: getProportionateScreenHeight(20)),
+              Padding(
+                padding: EdgeInsets.only(
+                  left: getProportionateScreenWidth(15),
+                ),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: FutureBuilder(
+                    future:DummyData.getTopDeals(),
+                    builder:(BuildContext context, AsyncSnapshot snapshot){
+                      if(!snapshot.hasData){
+                        return Container(
+                            child:Center(
+                              child: CircularProgressIndicator(),
+                            )
+                        );
+                      }
+                      else {
+                        return Container(
+                          height: getProportionateScreenHeight(250),
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: snapshot.data.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (BuildContext context, int index) {
+                                return HomeFeaturedListItem(
+                                  product: snapshot.data[index],
+                                );
+                              }),
+
+                        );
+                      }
+                    },
+                  ),
+                ),
+              ),
+              SizedBox(height: getProportionateScreenHeight(15)),
+              ListTitleRow(title: 'TOP Brands',suffix: 'See More'),
+              SizedBox(height: getProportionateScreenHeight(20)),
+              Padding(
+                padding: EdgeInsets.only(
+                  left: getProportionateScreenWidth(15),
+                ),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: FutureBuilder(
+                    future:DummyData.getTopBrands(),
+                    builder:(BuildContext context, AsyncSnapshot snapshot){
+                      if(!snapshot.hasData){
+                        return Container(
+                            child:Center(
+                              child: CircularProgressIndicator(),
+                            )
+                        );
+                      }
+                      else {
+                        return Container(
+                          height: getProportionateScreenHeight(190),
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: snapshot.data.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (BuildContext context, int index) {
+                                return HomeBrand(
+                                  brand: snapshot.data[index],
+                                );
+                              }),
+                        );
+                      }
+                    },
                   ),
                 ),
               ),

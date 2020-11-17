@@ -6,20 +6,50 @@ import 'package:shop_app/dummy_data.dart';
 import 'package:shop_app/models/product.dart';
 import 'package:shop_app/components/product_list_item.dart';
 import 'package:shop_app/size_config.dart';
-
 class Body extends StatefulWidget {
-  @override
-  _BodyState createState() => _BodyState();
-}
 
-class _BodyState extends State<Body> {
-  List<Product> products;
+  final String name;
+  const Body({
+   this.name,
+    });
+
+  @override
+  _BodyState createState() => _BodyState(name:name);
+
+}
+class _BodyState extends State<Body>{
+  Future<List<Product>> products;
   bool isGrid;
+
+  final String name;
+
+  _BodyState({
+      this.name});
 
   @override
   void initState() {
     super.initState();
-    //products = DummyData.dummyProducts;
+    if(name=="Rashan") {
+      products = DummyData.getRashan();
+    }
+    if(name=="Breakfast & Dairy") {
+      products = DummyData.getBreakfastandDairy();
+    }
+    if(name=="Baby & Kids") {
+      products = DummyData.getBabyandKids();
+    }
+    if(name=="Oral Care & Pharmacy") {
+      products = DummyData.getOralCareandPharmacy();
+    }
+    if(name=="Personal Care") {
+      products = DummyData.getPersonalCare();
+    }
+    if(name=="Detergent & Home Needs") {
+      products = DummyData.getDetergentandHomeNeeds();
+    }
+    if(name=="Snacks & Beverages") {
+      products = DummyData.getSnacksandBeverages();
+    }
     isGrid = true;
   }
 
@@ -110,31 +140,62 @@ class _BodyState extends State<Body> {
             SizedBox(height: getProportionateScreenHeight(16)),
             !isGrid
                 ? Expanded(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: products.length,
-                      itemBuilder: (context, index) {
-                        return ProductListItem(
-                          product: products[index],
-                        );
-                      },
-                    ),
+              child: FutureBuilder(
+                future:products,
+                builder:(BuildContext context, AsyncSnapshot snapshot){
+                  if(!snapshot.hasData){
+                    return Container(
+                        child:Center(
+                          child: CircularProgressIndicator(),
+                        )
+                    );
+                  }
+                  else {
+                    return Container(
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return ProductListItem(
+                              product: snapshot.data[index],
+                            );
+                          }),
+                    );
+                  }
+                },
+              ),
                   )
                 : Expanded(
-                    child: GridView.builder(
-                      shrinkWrap: true,
-                      itemCount: products.length,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: 0.78,
+              child: FutureBuilder(
+                future:products,
+                builder:(BuildContext context, AsyncSnapshot snapshot){
+                  if(!snapshot.hasData){
+                    return Container(
+                        child:Center(
+                          child: CircularProgressIndicator(),
+                        )
+                    );
+                  }
+                  else {
+                    return Container(
+                      child: GridView.builder(
+                        shrinkWrap: true,
+                        itemCount: snapshot.data.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 0.78,
+                        ),
+                        itemBuilder: (context, index) {
+                          return ProductGridItem(
+                            product: snapshot.data[index],
+                          );
+                        },
                       ),
-                      itemBuilder: (context, index) {
-                        return ProductGridItem(
-                          product: products[index],
-                        );
-                      },
-                    ),
-                  ),
+                    );
+                  }
+                },
+              ),
+            ),
           ],
         ),
       ),

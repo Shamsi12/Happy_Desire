@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/models/order.dart';
@@ -45,18 +46,19 @@ class _HomeFeaturedListItemState extends State<HomeFeaturedListItem> {
                 ),
                 child: Stack(
                   children: [
-                    GestureDetector(
-                      onTap: () => Navigator.pushNamed(
-                          context, ProductDetailsScreen.routeName),
-                      child: Image.asset(
+                    // GestureDetector(
+                    //   onTap: () => Navigator.pushNamed(
+                    //       context, ProductDetailsScreen.routeName),
+                    //   child:
+                      Image.network(
                         widget.product.image,
                         fit: BoxFit.cover,
                         width: double.infinity,
                         height: double.infinity,
                       ),
-                    ),
+                    //),
                     Align(
-                      alignment: Alignment.topRight,
+                      alignment: Alignment.topLeft,
                       child: GestureDetector(
                         onTap: () {
                           DateTime dt = DateTime.now();
@@ -69,7 +71,6 @@ class _HomeFeaturedListItemState extends State<HomeFeaturedListItem> {
                                 image: widget.product.image,
                                 price: widget.product.price,
                                 discountPrice: widget.product.discountPrice,
-                                quantity: widget.product.quantity,
                               ),
                             );
                           });
@@ -78,7 +79,7 @@ class _HomeFeaturedListItemState extends State<HomeFeaturedListItem> {
                           clipBehavior: Clip.hardEdge,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(10),
+                              bottomRight: Radius.circular(10),
                             ),
                           ),
                           elevation: 5,
@@ -94,13 +95,13 @@ class _HomeFeaturedListItemState extends State<HomeFeaturedListItem> {
                             ),
                             child: !isInCart
                                 ? Icon(
-                              Icons.add_shopping_cart_outlined,
-                              color: kPrimaryColor,
-                            )
+                                    Icons.add_shopping_cart_outlined,
+                                    color: kPrimaryColor,
+                                  )
                                 : Icon(
-                              Icons.add_shopping_cart,
-                              color: kPrimaryColor,
-                            ),
+                                    Icons.add_shopping_cart,
+                                    color: kPrimaryColor,
+                                  ),
                           ),
                         ),
                       ),
@@ -159,7 +160,7 @@ class _HomeFeaturedListItemState extends State<HomeFeaturedListItem> {
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 15.5,
+                fontSize: 13.5,
                 color: Colors.black.withOpacity(0.7),
               ),
             ),
@@ -176,20 +177,27 @@ class _HomeFeaturedListItemState extends State<HomeFeaturedListItem> {
                     color: kPrimaryColor,
                   ),
                 ),
-                SizedBox(width: SizeConfig.screenWidth * 0.03),
+                ]
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5),
+            child:Row(
+              children:[
+
                 (widget.product.discountPrice != 0)
                     ? Text(
                         '\$${widget.product.discountPrice}',
                         style: TextStyle(
-                            fontSize: 14.5,
+                            fontSize: 12.5,
                             color: Colors.grey,
                             decoration: TextDecoration.lineThrough),
                       )
                     : Container(),
-              ],
+            ]
             ),
           ),
-        ],
+      ]
       ),
     );
   }

@@ -61,10 +61,10 @@ class _BodyState extends State<Body> {
                       itemCount: 5,
                       glow: false,
                       itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
-                      itemBuilder: (context, _) => Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                      ),
+                      // itemBuilder: (context, _) => Icon(
+                      //   Icons.star,
+                      //   color: Colors.amber,
+                      // ),
                       onRatingUpdate: (rating) {
                         print(rating);
                       },

@@ -13,15 +13,15 @@ class CategoryListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CategoryListScreen(
-            name: category.name,
-          ),
-        ),
-      ),
+    return InkWell (
+      // onTap: () => Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => CategoryListScreen(
+      //       name: category.name,
+      //     ),
+      //   ),
+      // ),
       child: Container(
         padding: EdgeInsets.only(bottom: 3),
         decoration: BoxDecoration(

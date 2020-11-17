@@ -288,12 +288,13 @@ class Body extends StatelessWidget {
                                       allowHalfRating: true,
                                       itemCount: 5,
                                       glow: false,
+                                  //     itemBuilder: (context, _) => Icon(
+                                  //   Icons.star,
+                                  //   color: Colors.amber,
+                                  // ),
                                       itemPadding:
-                                          EdgeInsets.symmetric(horizontal: 1.0),
-                                      itemBuilder: (context, _) => Icon(
-                                        Icons.star,
-                                        color: Colors.amber,
-                                      ),
+                                      EdgeInsets.symmetric(horizontal: 1.0),
+
                                       onRatingUpdate: (rating) {
                                         print(rating);
                                       },
